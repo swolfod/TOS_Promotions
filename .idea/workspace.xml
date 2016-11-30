@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bc2805b6-8c98-453f-b1c7-bedf6a6847fe" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TOS_Pyramid/urls.py" afterPath="$PROJECT_DIR$/TOS_Pyramid/urls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WechatApi/config.py" afterPath="$PROJECT_DIR$/WechatApi/config.py" />
     </list>
     <ignored path="TOS_Pyramid.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -84,11 +84,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="config.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WechatApi/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="9" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="9" />
+            <state relative-caret-position="240">
+              <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -116,7 +116,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TOS_Pyramid/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="425">
@@ -160,9 +160,9 @@
         <option value="$PROJECT_DIR$/TOS_Pyramid/views.py" />
         <option value="$PROJECT_DIR$/templates/admin.html" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/WechatApi/config.py" />
         <option value="$PROJECT_DIR$/WechatApi/wechatUtils.py" />
         <option value="$PROJECT_DIR$/TOS_Pyramid/urls.py" />
+        <option value="$PROJECT_DIR$/WechatApi/config.py" />
       </list>
     </option>
   </component>
@@ -603,7 +603,14 @@
       <option name="project" value="LOCAL" />
       <updated>1480538760745</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="urls&#10;">
+      <created>1480538952903</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1480538952903</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -646,7 +653,8 @@
     <MESSAGE value="wechat login fixes" />
     <MESSAGE value="gitignore" />
     <MESSAGE value="wechat oauth fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="wechat oauth fixes" />
+    <MESSAGE value="urls&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="urls&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -863,14 +871,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WechatApi/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="9" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TOS_Pyramid/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -898,6 +898,14 @@
           <folding>
             <element signature="e#645#675#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WechatApi/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -14,7 +14,7 @@ SecretKey = {
     "mobile_trip": "9e3a0a3de5207a4dc8747f4029bbd4cb"
 }
 
-RedirectPortal = "http://www.lushu.com/auth/wechat/?redirect={0}"
+RedirectPortal = "http://lushu.com/auth/wechat/?redirect={0}"
 
 MerchantId = "1230061502"
 MerchantKey = ""
