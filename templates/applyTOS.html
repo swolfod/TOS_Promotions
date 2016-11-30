@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>申请TOS试用</title>
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
+</head>
+<body>
+    <div class="applyForm" style="padding: 40px;width:300px;">
+      <form method="post" class="form-signin">
+        {% csrf_token %}
+        <h5>请输入密码</h5>
+        {% if error %}
+          <div class="alert alert-danger" role="alert">
+            {{ error }}
+          </div>
+        {% endif %}
+        <div class="form-group">
+          <input type="text" name="name" id="name" placeholder="姓名" />
+        </div>
+        <div class="form-group">
+          <input type="text" name="phone" id="phone" placeholder="电话" />
+        </div>
+        <div class="form-group">
+          <input type="text" name="email" id="email" placeholder="邮件地址" />
+        </div>
+        <div class="form-group">
+          <input type="text" name="organization" id="organization" placeholder="机构名称" />
+        </div>
+        <div class="form-group">
+          <input type="text" name="customized" id="customized" placeholder="是否定制师" />
+        </div>
+        <div class="form-group">
+          <select id="type" name="type">
+            <option value="0"> - 请选择您的行业 - </option>
+            <option value="1">旅行社</option>
+            <option value="2">定制社</option>
+            <option value="3">地接社</option>
+            <option value="4">俱乐部</option>
+            <option value="5">OTA</option>
+            <option value="6">教育机构</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="text" name="location" id="location" placeholder="地理位置" />
+        </div>
+        <div class="form-group">
+          <select id="jobTitle" name="jobTitle">
+            <option value="0"> - 请选择您的职位 - </option>
+            <option value="1">定制师/产品经理/计调</option>
+            <option value="2">销售顾问/客服</option>
+            <option value="3">高管/创始人</option>
+            <option value="4">部门经理/总监</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select id="countLevel" name="countLevel">
+            <option value="0"> - 请选择您的定制师人数 - </option>
+            <option value="1">1人</option>
+            <option value="2">2-5人</option>
+            <option value="3">6-10人</option>
+            <option value="4">11-20人</option>
+            <option value="5">20人以上</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="text" name="foreigner" id="foreigner" placeholder="是否在国外" />
+        </div>
+        <div class="form-group">
+          <input type="text" name="contact" id="contact" placeholder="其他联系方式" />
+        </div>
+        <div class="form-group">
+          <input type="text" name="code" id="code" placeholder="活动码" value="{{ code }}"/>
+        </div>
+        {% if applied and not error %}
+          <div class="alert alert-success" role="alert">
+            恭喜,申请成功,点击<a href="{% url "TOS_Pyramid.views.shareCode" code %}">返回</a>.
+          </div>
+        {% else %}
+          <div class="form-group">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">确定</button>
+          </div>
+        {% endif %}
+      </form>
+    </div>
+</body>
+</html>

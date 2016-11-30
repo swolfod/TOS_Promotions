@@ -1,0 +1,201 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>发布分享管理</title>
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
+  <link rel="stylesheet" href="{% static "css/adminStyles.css" %}">
+
+  <script src="{% static "js/jquery.min.js" %}"></script>
+  <script src="{% static "js/djangoUtils.js" %}"></script>
+  <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="//cdn.bootcss.com/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
+</head>
+<body>
+  <div id="adminMain">
+    <h2 class="pageTitle">发布会分享码</h2>
+
+    <div id="applicationsList" class="pageContent">
+      <div class="row">
+        <div class="col-xs-9">
+          <div class="btn-group" role="group">
+            <button class="btn btn-primary" onclick="addCode()" data-toggle="modal" data-target="#newCodeDialog">添加活动码</button>
+          </div>
+          <div class="btn-group" role="group">
+            <a class="btn btn-link" href="{% url "TOS_Pyramid.views.exportPromotions" %}{% if query %}?q={{ query }}{% endif %}">
+              <span class="glyphicon glyphicon-export"></span>导出
+            </a>
+          </div>
+        </div>
+        <div class="col-xs-1" id="clearSearch">
+          {% if query %}
+            <a href="{% url "TOS_Pyramid.views.admin" %}">清除</a>
+          {% endif %}
+        </div>
+        <div class="col-xs-2">
+          <div class="input-group">
+            <input type="text" id="searchBox" class="form-control" placeholder="搜索" onkeydown="return searchKeyDown(event);" {% if query %}value="{{ query }}" {% endif %}/>
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" onclick="searchCode();return false;"><span class="glyphicon glyphicon-search"></span></button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <table class="table table-striped table-hover browseTable">
+        <thead>
+          <tr>
+            <th>优惠码</th>
+            <th>对应机构</th>
+            <th>接受邀请数</th>
+            <th>邀请申请数</th>
+            <th>邀请开通数</th>
+            <th>需奖励总天数</th>
+            <th>已奖励天数</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for code in codes %}
+          <tr id="code_{{ code.id }}"{% if code.featured %} class="success"{% endif %}>
+            <td class="codeCell">{{ code.code }}</td>
+            <td class="organizationCell">{% if code.organization %}{{ code.organization.name }}{% endif %}</td>
+            <td class="inviteeCell"><div>{{ code.invitees }}</div></td>
+            <td class="appliedCell"><div>{{ code.applied }}</div></td>
+            <td class="approvedCell">{{ code.approved }}</td>
+            <td class="bonusDayCell">{{ code.bonusDays }}</td>
+            <td class="usedBonusCell">{{ code.usedBonus }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+
+      <div id="newCodeDialog" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">>
+        <div class="modal-dialog modal-sm" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+              <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="searchOrg">机构名称或成员邮箱/手机号:</label>
+                  <div class="input-group">
+                    <input type="text" id="searchOrg" class="form-control" placeholder="搜索" onkeydown="return searchOrgKeyDown(event);"/>
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" onclick="searchOrganization();return false;"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                  </div>
+                </div>
+                <div class="alert alert-danger" role="alert" id="searchOrgError">
+                  没有找到匹配的机构
+                </div>
+                <div class="form-group" id="organizationGroup">
+                  <label for="searchOrg">邮箱或手机号:</label>
+                  <select id="organizationList" name="organization" class="form-control"></select>
+                </div>
+                <div class="form-group" id="codeSubmit">
+                  <button class="btn btn-lg btn-primary btn-block" type="submit">确定</button>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div><!-- /.modal-content -->
+        </div>
+      </div>
+
+      {% if prevStart != None or nextStart != None %}
+        <div class="pager">
+          <div class="btn-group" role="group">
+            {% if prevStart != None %}
+              <a href="{% url "TOS_Pyramid.views.admin" %}?q={{ query }}&start={{ prevStart }}" class="btn btn-default">上一页</a>
+            {% endif %}
+            {% if nextStart != None %}
+              <a href="{% url "TOS_Pyramid.views.admin" %}?q={{ query }}&start={{ nextStart }}" class="btn btn-default">下一页</a>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    function searchKeyDown(e) {
+      e = e || window.event;
+
+      if (!e || e.keyCode != 13)
+        return;
+
+      searchCode();
+
+      e.preventDefault();
+      return false;
+    }
+
+    function searchCode() {
+      var query = $("#searchBox").val().trim();
+      if (query)
+        window.location.href = "{% url "TOS_Pyramid.views.admin" %}?q=" + query;
+    }
+
+
+    function searchOrgKeyDown(e) {
+      e = e || window.event;
+
+      if (!e || e.keyCode != 13)
+        return;
+
+      searchOrganization();
+
+      e.preventDefault();
+      return false;
+    }
+
+    function searchOrganization() {
+      var query = $("#searchOrg").val().trim();
+
+      $.ajax({
+        url:  '{% url "TOS_Pyramid.views.ajSearchOrganization" %}?q=' + query,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          var organizations = data.result.organizations;
+          var $orgList = $("#organizationList").empty();
+
+          if (organizations && organizations.length) {
+            organizations.forEach(function (organization) {
+              $orgList.append("<option value=" + organization.id + ">" + organization.name + "</option>")
+            });
+
+            $orgList.val(organizations[0].id);
+
+            $("#organizationGroup").show();
+            $("#codeSubmit").show();
+            $("#searchOrgError").hide();
+          }
+          else {
+            $("#searchOrgError").show();
+            $("#organizationGroup").hide();
+            $("#codeSubmit").hide();
+          }
+        },
+        error: function(e) {
+          alert(e);
+        }
+      });
+    }
+
+    function addCode() {
+      $("#searchOrg").val("");
+      $("#organizationList").empty();
+      $("#organizationGroup").hide();
+      $("#searchOrgError").hide();
+      $("#codeSubmit").hide();
+    }
+  </script>
+</body>
+</html>

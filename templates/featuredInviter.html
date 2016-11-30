@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>我的活动码</title>
+</head>
+<body>
+
+  <h3>你好, <img src="{{ account.headimgurl }}" /> {{ account.nickname }}</h3>
+  <h4>分享这一页,获取免费TOS试用</h4>
+
+  <h5>已邀请人数: {{ promotionCode.invitees }}</h5>
+  <h5>邀请申请人数: {{ promotionCode.applied }}</h5>
+  <h5>已审批申请人数: {{ promotionCode.approved }}</h5>
+</body>
+</html>

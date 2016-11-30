@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>路书活动邀请</title>
+</head>
+<body>
+
+  <h3>你好, <img src="{{ account.headimgurl }}" /> {{ account.nickname }}</h3>
+  <h4>
+    {% if organization %}来自{{ organization.name }}的{% endif %}<img src="{{ account.headimgurl }}" /> {{ inviter.nickname }}邀请您加入
+  </h4>
+  <h4>活动码: {{ code }}</h4>
+
+  <form method="post" class="form-signin">
+    {% csrf_token %}
+    <input type="hidden" name="code" value="{{ code }}" />
+    <button type="submit">领取</button>
+  </form>
+</body>
+</html>
