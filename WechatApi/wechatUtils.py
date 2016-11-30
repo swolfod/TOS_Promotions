@@ -38,7 +38,7 @@ def authenticated(request):
 def wechatAuthUrl(request, state=""):
     return "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base,snsapi_userinfo&state={2}#wechat_redirect".format(
         AppId["mp"],
-        quote_plus(request.build_absolute_uri(reverse("WechatApi.views.mpAuthCallback"))),
+        quote_plus("http://lushu.com/wechat/authCallback/"),
         state
     )
 
@@ -48,7 +48,7 @@ def requireWechatAuth(oriFunc):
         if authenticated(request):
             return oriFunc(request,  *args, **kwargs)
 
-        return HttpResponseRedirect(wechatAuthUrl(request, quote_plus(request.get_full_path())))
+        return HttpResponseRedirect(wechatAuthUrl(request, quote_plus(request.build_absolute_uri(request.get_full_path()))))
 
     return wrapper
 
