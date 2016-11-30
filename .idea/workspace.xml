@@ -88,7 +88,7 @@
         <entry file="file://$PROJECT_DIR$/WechatApi/config.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
-              <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
+              <caret line="16" column="46" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -610,7 +610,14 @@
       <option name="project" value="LOCAL" />
       <updated>1480538952903</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="wechat oauth fixes">
+      <created>1480539043961</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1480539043961</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -652,9 +659,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="wechat login fixes" />
     <MESSAGE value="gitignore" />
-    <MESSAGE value="wechat oauth fixes" />
     <MESSAGE value="urls&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="urls&#10;" />
+    <MESSAGE value="wechat oauth fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="wechat oauth fixes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -904,7 +911,7 @@
     <entry file="file://$PROJECT_DIR$/WechatApi/config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
-          <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
+          <caret line="16" column="46" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="46" />
           <folding />
         </state>
       </provider>
