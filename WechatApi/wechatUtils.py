@@ -36,9 +36,12 @@ def authenticated(request):
 
 
 def wechatAuthUrl(request, state=""):
+    authCallbackUrl = request.build_absolute_uri(reverse("WechatApi.views.mpAuthCallback"))
+    callbackPortal = RedirectPortal.format(quote_plus(authCallbackUrl))
+
     return "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base,snsapi_userinfo&state={2}#wechat_redirect".format(
         AppId["mp"],
-        quote_plus("http://lushu.com/wechat/authCallback/"),
+        quote_plus(callbackPortal),
         state
     )
 
@@ -48,7 +51,7 @@ def requireWechatAuth(oriFunc):
         if authenticated(request):
             return oriFunc(request,  *args, **kwargs)
 
-        return HttpResponseRedirect(wechatAuthUrl(request, quote_plus(request.build_absolute_uri(request.get_full_path()))))
+        return HttpResponseRedirect(wechatAuthUrl(request, quote_plus(request.get_full_path())))
 
     return wrapper
 
@@ -110,7 +113,6 @@ def getCurrentAccount(request):
     if not account and WECHAT_DEBUG:
         account = WechatAccount(
             unionid = uuid1().hex,
-            openid = uuid1().hex,
             nickname = DEBUG_USERS[randint(0, len(DEBUG_USERS) - 1)],
             sex = randint(0, 1) == 0,
             headimgurl = DEBUG_AVATARS[randint(0, len(DEBUG_AVATARS) - 1)]
