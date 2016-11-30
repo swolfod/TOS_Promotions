@@ -36,11 +36,12 @@ def authenticated(request):
 
 
 def wechatAuthUrl(request, state=""):
-    authCallbackUrl = WechatCallbackHost + reverse("WechatApi.views.mpAuthCallback")
+    authCallbackUrl = request.build_absolute_uri(reverse("WechatApi.views.mpAuthCallback"))
+    callbackPortal = RedirectPortal.format(quote_plus(authCallbackUrl))
 
     return "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base,snsapi_userinfo&state={2}#wechat_redirect".format(
         AppId["mp"],
-        quote_plus(authCallbackUrl),
+        quote_plus(callbackPortal),
         state
     )
 

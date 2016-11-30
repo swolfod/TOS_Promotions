@@ -16,15 +16,16 @@ Including another URLconf
 
 from django.conf.urls import *
 from .views import *
+from WechatApi.views import mpAuthCallback
 
 urlpatterns = [
     url(r'^wechat/', include('WechatApi.urls')),
     url(r'^admin/login$', adminAuth, name="TOS_Pyramid.views.adminAuth"),
     url(r'^admin/$', admin, name="TOS_Pyramid.views.admin"),
     url(r'^admin/exports$', exportPromotions, name="TOS_Pyramid.views.exportPromotions"),
-    url(r'^search-organization/$', ajSearchOrganization, name="TOS_Pyramid.views.ajSearchOrganization"),
-    url(r'^apply-tos/(\w+)/$', applyTOSBeta, name="TOS_Pyramid.views.applyTOSBeta"),
-    url(r'^bind-code/(\w+)/$', bindCode, name="TOS_Pyramid.views.bindCode"),
-    url(r'^share/(\w+)/$', shareCode, name="TOS_Pyramid.views.shareCode"),
-
+    url(r'^search-organization$', ajSearchOrganization, name="TOS_Pyramid.views.ajSearchOrganization"),
+    url(r'^apply-tos/(\w+)$', applyTOSBeta, name="TOS_Pyramid.views.applyTOSBeta"),
+    url(r'^bind-code/(\w+)$', bindCode, name="TOS_Pyramid.views.bindCode"),
+    url(r'^share/(\w+)$', shareCode, name="TOS_Pyramid.views.shareCode"),
+    url(r"^auth/wechat$", mpAuthCallback, name="PortalWechatCallback"),
 ]
