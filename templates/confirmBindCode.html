@@ -2,9 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>更换优惠码</title>
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
 <body>
 
+  <h3>已有优惠码,是否更换?</h3>
+
+    <form method="post" class="form-signin">
+      {% csrf_token %}
+      <div class="form-group">
+        <input type="hidden" name="bind" value="1" />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">使用新的优惠码</button>
+      </div>
+    </form>
+
+    <form method="post" class="form-signin">
+      {% csrf_token %}
+      <div class="form-group">
+        <input type="hidden" name="bind" value="0" />
+        <button class="btn btn-lg btn-block" type="submit">不更换我的优惠码</button>
+      </div>
+    </form>
 </body>
 </html>

@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^admin/exports/$', exportPromotions, name="TOS_Pyramid.views.exportPromotions"),
     url(r'^search-organization/$', ajSearchOrganization, name="TOS_Pyramid.views.ajSearchOrganization"),
     url(r'^apply-tos/(\w+)/$', applyTOSBeta, name="TOS_Pyramid.views.applyTOSBeta"),
+    url(r'^approve-application/$', ajApproveApplication, name="TOS_Pyramid.views.ajApproveApplication"),
     url(r'^bind-code/(\w+)/$', bindCode, name="TOS_Pyramid.views.bindCode"),
     url(r'^share/(\w+)/$', shareCode, name="TOS_Pyramid.views.shareCode"),
     url(r"^auth/wechat/$", mpAuthCallback, name="PortalWechatCallback"),

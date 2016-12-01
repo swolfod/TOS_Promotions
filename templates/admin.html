@@ -7,13 +7,11 @@
   <title>发布分享管理</title>
 
   <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
   <link rel="stylesheet" href="{% static "css/adminStyles.css" %}">
 
   <script src="{% static "js/jquery.min.js" %}"></script>
   <script src="{% static "js/djangoUtils.js" %}"></script>
   <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script src="//cdn.bootcss.com/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
 </head>
 <body>
   <div id="adminMain">
@@ -56,11 +54,12 @@
             <th>邀请开通数</th>
             <th>需奖励总天数</th>
             <th>已奖励天数</th>
+            <th>TOS申请</th>
           </tr>
         </thead>
         <tbody>
         {% for code in codes %}
-          <tr id="code_{{ code.id }}"{% if code.featured %} class="success"{% endif %}>
+          <tr id="code_{{ code.id }}"{% if code.featured %} class="success"{% elif code.application and code.application.approved %} class="success"{% endif %}>
             <td class="codeCell">{{ code.code }}</td>
             <td class="organizationCell">{% if code.organization %}{{ code.organization.name }}{% endif %}</td>
             <td class="inviteeCell"><div>{{ code.invitees }}</div></td>
@@ -68,6 +67,50 @@
             <td class="approvedCell">{{ code.approved }}</td>
             <td class="bonusDayCell">{{ code.bonusDays }}</td>
             <td class="usedBonusCell">{{ code.usedBonus }}</td>
+            <td class="applicationCell">
+              {% if code.application %}
+                {% if code.application.approved %}
+                  已核准
+                {% else %}
+                  未核准
+                {% endif %}
+
+                <a href="javascript:void(0)" data-toggle="modal" data-target="#appDialog_{{ code.id }}">查看</a>
+
+                <div id="appDialog_{{ code.id }}" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">>
+                  <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <div class="form-group">
+                          名字: {{ code.application.name }}
+                        </div>
+                        <div class="form-group">
+                          机构名称: {{ code.application.organization }}
+                        </div>
+                        <div class="form-group">
+                          电话: {{ code.application.phone }}
+                        </div>
+                        <div class="form-group">
+                          邮箱: {{ code.application.email }}
+                        </div>
+                        {% if code.application.approved %}
+                          <div class="alert alert-success" role="alert">
+                            已核准
+                          </div>
+                        {% else %}
+                          <div class="form-group">
+                            <button class="btn btn-primary" onclick="approveApplication({{ code.id }}, {{ code.application.id }});">核准</button>
+                          </div>
+                        {% endif %}
+
+                      </div>
+                    </div><!-- /.modal-content -->
+                  </div>
+                </div>
+              {% else %}
+                无
+              {% endif %}
+            </td>
           </tr>
         {% endfor %}
         </tbody>
@@ -76,8 +119,6 @@
       <div id="newCodeDialog" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">>
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
-            <div class="modal-header">
-            </div>
             <div class="modal-body">
               <form method="post">
                 {% csrf_token %}
@@ -101,8 +142,6 @@
                   <button class="btn btn-lg btn-primary btn-block" type="submit">确定</button>
                 </div>
               </form>
-            </div>
-            <div class="modal-footer">
             </div>
           </div><!-- /.modal-content -->
         </div>
@@ -182,6 +221,28 @@
             $("#organizationGroup").hide();
             $("#codeSubmit").hide();
           }
+        },
+        error: function(e) {
+          alert(e);
+        }
+      });
+    }
+
+    function approveApplication(codeId, applicationId) {
+      $.ajax({
+        url:  '{% url "TOS_Pyramid.views.ajApproveApplication" %}',
+        type: 'POST',
+        data: {
+          application: applicationId
+        },
+        dataType: 'json',
+        success: function(response) {
+          if (!response.success) {
+            return alert(response.errMsg);
+          }
+
+          $("#code_" + codeId).addClass("success");
+          $('#appDialog_' + codeId).modal('toggle');
         },
         error: function(e) {
           alert(e);

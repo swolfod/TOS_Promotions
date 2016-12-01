@@ -53,39 +53,30 @@ class OrganizationMember(models.Model):
         db_table = "TOS_Core_organizationmember"
 
 
-class TOSBetaApplication(models.Model):
-    userId       = models.IntegerField(null=True)
-    branchKey    = models.CharField(max_length=32, null=True)
+class TOSApplication(models.Model):
     name         = models.CharField(max_length=64)
     phone        = models.CharField(max_length=32, null=True)
     email        = models.EmailField(max_length=255, null=True)
-    type         = models.IntegerField(default=0)
-    location     = models.CharField(max_length=255, default="")
-    jobTitle     = models.IntegerField(default=0)
-    countLevel   = models.IntegerField(default=0)
     organization = models.CharField(max_length=255)
-    customized   = models.BooleanField(default=1)
-    description  = models.TextField(null=True)
-    status       = models.IntegerField(default=0)
-    foreigner    = models.BooleanField(default=0)
-    contact      = models.CharField(max_length=64, null=True)
+    approved     = models.BooleanField(default=False)
     created      = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-       managed = False
-       db_table = 'Pieceful_tosbetaapplication'
+        app_label = "TOS_Pyramid"
 
 
 class PromotionCode(models.Model):
     code        = models.CharField(max_length=16)
     invitees    = models.IntegerField(default=0)
     applied     = models.IntegerField(default=0)
+    approved    = models.IntegerField(default=0)
+    bonusDays   = models.IntegerField(default=0)
     usedBonus   = models.IntegerField(default=0)
     featured    = models.BooleanField(default=False)
     creator     = models.ForeignKey(WechatAccount, null=True)
     organization= models.ForeignKey(Organization, related_name="promotionCodes", null=True)
     inviterCode = models.ForeignKey("self", null=True)
-    application = models.ForeignKey(TOSBetaApplication, related_name="+", null=True)
+    application = models.ForeignKey(TOSApplication, related_name="+", null=True)
 
     class Meta:
         app_label = "TOS_Pyramid"

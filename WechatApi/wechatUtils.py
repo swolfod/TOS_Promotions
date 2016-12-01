@@ -113,6 +113,7 @@ def getCurrentAccount(request):
     if not account and WECHAT_DEBUG:
         account = WechatAccount(
             unionid = uuid1().hex,
+            openid = uuid1().hex,
             nickname = DEBUG_USERS[randint(0, len(DEBUG_USERS) - 1)],
             sex = randint(0, 1) == 0,
             headimgurl = DEBUG_AVATARS[randint(0, len(DEBUG_AVATARS) - 1)]

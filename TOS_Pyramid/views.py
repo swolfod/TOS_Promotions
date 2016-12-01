@@ -24,6 +24,11 @@ def bindCode(request, code):
         currentCode = PromotionCode.objects.filter(accounts__account=wechatAccount).first()
         if not currentCode:
             CodeAccount(code=promotionCode, account=wechatAccount).save()
+
+            if not promotionCode.bonusDays:
+                promotionCode.bonusDays = 15
+                promotionCode.save()
+
         elif currentCode.code != code:
             return secureRender(request, "confirmBindCode.html", {
                 "account": wechatAccount,
@@ -36,6 +41,11 @@ def bindCode(request, code):
         toBind = str2bool(request.POST["bind"].strip().lower())
         if toBind:
             CodeAccount.objects.filter(account=wechatAccount).update(code=promotionCode)
+
+            if not promotionCode.bonusDays:
+                promotionCode.bonusDays = 15
+                promotionCode.save()
+
             return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(code,)))
         else:
             currentCode = PromotionCode.objects.filter(accounts__account=wechatAccount).first()
@@ -62,7 +72,7 @@ def shareCode(request, code):
         while PromotionCode.objects.filter(code=code).exists():
             code = randomString(8)
 
-        promotionCode = PromotionCode(code=code, creator=wechatAccount, inviterCode=inviterCode)
+        promotionCode = PromotionCode(code=code, creator=wechatAccount, bonusDays=15, inviterCode=inviterCode)
         promotionCode.save()
 
         CodeAccount(code=promotionCode, account=wechatAccount).save()
@@ -80,9 +90,6 @@ def shareCode(request, code):
             "code": code
         })
     elif promotionCode.organization and promotionCode.featured:
-        approved = PromotionCode.objects.filter(inviterCode=promotionCode, application__status=1).count()
-        bonusDays = 15 * approved
-
         return secureRender(request, "featuredInviter.html", {
             "account": wechatAccount,
             "promotionCode": {
@@ -90,8 +97,8 @@ def shareCode(request, code):
                 "code": promotionCode.code,
                 "invitees": promotionCode.invitees,
                 "applied": promotionCode.applied,
-                "approved": approved,
-                "bonusDays": bonusDays,
+                "approved": promotionCode.approved,
+                "bonusDays": promotionCode.bonusDays,
                 "usedBonus": promotionCode.usedBonus,
                 "featured": promotionCode.featured,
                 "organization": promotionCode.organization
@@ -144,7 +151,7 @@ def admin(request):
 
         return HttpResponseRedirect(reverse("TOS_Pyramid.views.admin"))
 
-    codeQuery = PromotionCode.objects.select_related("organization").order_by("-featured", "-id")
+    codeQuery = PromotionCode.objects.select_related("organization", "application").order_by("-featured", "-id")
     codeCount = codeQuery.count()
 
     if q:
@@ -153,25 +160,6 @@ def admin(request):
         codeQuery = codeQuery.filter(organization__in=organizations)
 
     promotionCodes = codeQuery[start: 50]
-    codeIds = [code.id for code in promotionCodes]
-    approvedCodes = PromotionCode.objects.filter(inviterCode_id__in=codeIds, application__status=1).all()
-
-    codes = []
-    for code in promotionCodes:
-        approved = len([approvedCode for approvedCode in approvedCodes if approvedCode.inviterCode_id == code.id])
-        bonusDays = 15 * approved
-
-        codes.append({
-            "id": code.id,
-            "code": code.code,
-            "invitees": code.invitees,
-            "applied": code.applied,
-            "approved": approved,
-            "bonusDays": bonusDays,
-            "usedBonus": code.usedBonus,
-            "featured": code.featured,
-            "organization": code.organization
-        })
 
     prevStart = None
     nextStart = None
@@ -186,7 +174,7 @@ def admin(request):
     return secureRender(request, "admin.html", {
         "prevStart": prevStart,
         "nextStart": nextStart,
-        "codes": codes,
+        "codes": promotionCodes,
         "query": q
     })
 
@@ -205,6 +193,22 @@ def ajSearchOrganization(request):
 
 
 @transaction.atomic
+def ajApproveApplication(request):
+    appId = request.POST["application"]
+    promotionCode = PromotionCode.objects.select_related("application", "inviterCode").get(application_id=appId)
+    if not promotionCode.application.approved:
+        promotionCode.application.approved = True
+        promotionCode.application.save()
+
+        if promotionCode.inviterCode:
+            promotionCode.inviterCode.approved += 1
+            promotionCode.inviterCode.bonusDays += 15
+            promotionCode.inviterCode.save()
+
+    return respondJson()
+
+
+@transaction.atomic
 def applyTOSBeta(request, code):
     responseContent = {
         "code": code
@@ -217,16 +221,9 @@ def applyTOSBeta(request, code):
 
     if request.method == "POST":
         name = request.POST["name"].strip()
-        phone = request.POST.get("phone", "").strip()
-        email = request.POST.get("email", "").strip()
-        organization = request.POST.get("organization", "").strip()
-        customized = str2bool(request.POST.get("customized", 0))
-        type = int(request.POST.get("type", 0))
-        location = request.POST.get("location", "").strip()
-        jobTitle = int(request.POST.get("jobTitle", 0))
-        countLevel = int(request.POST.get("countLevel", 0))
-        foreigner = str2bool(request.POST.get("foreigner", 0))
-        contact = request.POST.get("contact", "").strip()
+        phone = request.POST["phone"].strip()
+        email = request.POST["email"].strip()
+        organization = request.POST["organization"].strip()
         code = request.POST["code"]
 
         promotionCode = PromotionCode.objects.get(code=code)
@@ -239,8 +236,7 @@ def applyTOSBeta(request, code):
             if members:
                 responseContent["error"] = "这个邮箱/手机号码已经注册过了"
 
-        application = TOSBetaApplication(name=name, phone=phone, email=email, organization=organization, customized=customized, type=type,
-                           location=location, jobTitle=jobTitle, foreigner=foreigner, contact=contact, countLevel=countLevel)
+        application = TOSApplication(name=name, phone=phone, email=email, organization=organization)
         application.save()
 
         promotionCode.application = application
@@ -248,6 +244,7 @@ def applyTOSBeta(request, code):
 
         if promotionCode.inviterCode:
             promotionCode.inviterCode.applied += 1
+            promotionCode.inviterCode.bonusDays += 2
             promotionCode.inviterCode.save()
 
         responseContent["applied"] = True
@@ -270,13 +267,10 @@ def exportPromotions(request):
         codeQuery = codeQuery.filter(organization__in=organizations)
 
     promotionCodes = codeQuery.all()
-    approvedCodes = PromotionCode.objects.filter(application__status=1).all()
 
     for code in promotionCodes:
-        approved = len([approvedCode for approvedCode in approvedCodes if approvedCode.inviterCode_id == code.id])
-        bonusDays = 15 * approved
         organizationName = code.organization.name if code.organization else ""
 
-        writer.writerow([code.code, organizationName, code.invitees, code.applied, approved, bonusDays, code.usedBonus])
+        writer.writerow([code.code, organizationName, code.invitees, code.applied, code.approved, code.bonusDays, code.usedBonus])
 
     return response
