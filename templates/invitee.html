@@ -1,21 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load static %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <title>路书活动邀请</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>路书 - 专业的旅游行程编辑平台，定制旅游管理系统</title>
+  <meta name="description" content="路书科技为旅行社的定制旅游业务，提供路书制作、目的地知识库管理、行中手机导航、行程方案报价等解决方案。路书云TOS是旅行社发展定制旅游专业的旅游管理系统，帮助旅行社建立目的地知识库，提高行程规划效率。">
+  <link rel="Shortcut Icon" href="{% static "images/favorite.ico" %}" type="image/x-icon" />
+  <link rel="Bookmark" href="{% static "images/favorite.ico" %}" type="image/x-icon" />
+  <link rel="icon" href="{% static "images/favorite.ico" %}" type="image/x-icon" />
+  <link href="{% static "css/layout.css" %}" rel="stylesheet" type="text/css" />
+  <link href="{% static "css/font.css" %}" rel="stylesheet" type="text/css" />
+  <link href="{% static "css/cont.css" %}" rel="stylesheet" type="text/css" />
+  <link href="{% static "css/responsive.css" %}" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="{% static "js/jquery-1.8.3.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/default.js" %}"></script>
 </head>
+
 <body>
 
-  <h3>你好, <img src="{{ account.headimgurl }}" /> {{ account.nickname }}</h3>
-  <h4>
-    {% if organization %}来自{{ organization.name }}的{% endif %}<img src="{{ account.headimgurl }}" /> {{ inviter.nickname }}邀请您加入
-  </h4>
-  <h4>活动码: {{ code }}</h4>
+  <div class="containerGreen">
+    <div class="title">您的好友<br/>「 {{ inviter.nickname }} 」<br/>
+      <div class="h3">正在使用路书，并向你扔了一个优惠码</div>
+    </div>
 
-  <form method="post" class="form-signin">
-    {% csrf_token %}
-    <input type="hidden" name="code" value="{{ code }}" />
-    <button type="submit">领取</button>
-  </form>
+    <div class="photo">
+      <img src="{% static "images/logoL.png" %}" width="300" height="327"/>
+    </div>
+    <form method="post" class="form-signin">
+      {% csrf_token %}
+      <input type="hidden" name="inviter" value="{{ inviter.id }}" />
+      <div class="btnWrap"><a href="javascript:void(0)" onclick="$(this).closest('form').submit(); return false;" class="btnBar">马上领取</a></div>
+    </form>
+  </div>
+
+
+
 </body>
 </html>

@@ -1,17 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load static %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <title>我的活动码</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>路书 - 专业的旅游行程编辑平台，定制旅游管理系统</title>
+  <meta name="description" content="路书科技为旅行社的定制旅游业务，提供路书制作、目的地知识库管理、行中手机导航、行程方案报价等解决方案。路书云TOS是旅行社发展定制旅游专业的旅游管理系统，帮助旅行社建立目的地知识库，提高行程规划效率。">
+  <link rel="Shortcut Icon" href="{% static "images/favorite.ico" %}" type="image/x-icon" />
+  <link rel="Bookmark" href="{% static "images/favorite.ico" %}" type="image/x-icon" />
+  <link rel="icon" href="{% static "images/favorite.ico" %}" type="image/x-icon" />
+  <link href="{% static "css/layout.css" %}" rel="stylesheet" type="text/css" />
+  <link href="{% static "css/font.css" %}" rel="stylesheet" type="text/css" />
+  <link href="{% static "css/cont.css" %}" rel="stylesheet" type="text/css" />
+  <link href="{% static "css/responsive.css" %}" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="{% static "js/jquery-1.8.3.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/default.js" %}"></script>
 </head>
+
 <body>
-  <h3>你好, <img src="{{ account.headimgurl }}" /> {{ account.nickname }}</h3>
-  <h4>分享这一页,获取免费TOS试用</h4>
 
-  <h5>已邀请人数: {{ promotionCode.invitees }}</h5>
-  <h5>邀请申请人数: {{ promotionCode.applied }}</h5>
-  <h5>已审批申请人数: {{ promotionCode.approved }}</h5>
+  <div class="containerGreen">
+    <div class="title">Hi,「 {{ account.nickname }} 」<br/>
+      <div class="h3">您已获得，路书云TOS {{ promotionCode.bonusDays }}天使用奖励</div>
+    </div>
+    <div class="whitePanel">
+      <div class="logo"><img src="{% static "images/logo.png" %}" width="80" height="13"/></div>
+      <div class="dayNum"><span class="num">{{ promotionCode.bonusDays   }}</span>天</div>
+    </div>
+    <a href="{% url "TOS_Pyramid.views.applyTOSBeta" promotionCode.code %}" class="btnBar">立即使用</a>
 
-  <a href="{% url "TOS_Pyramid.views.applyTOSBeta" promotionCode.code %}">立即申请路书TOS试用</a>
+    <div class="btmShare">
+      <img src="{% static "images/share.png" %}" width="330" height="114"/>
+      <br/><br/>
+      一家机构申请路书，自动获得 <span class="green width20"> 2天</span> 使用权奖励
+      <br/>
+      一家机构签约路书，自动获得 <span class="green width20">15天</span> 使用权奖励
+      <br/><br/>
+      <div class="h3 green">点击右上角, 分享给你的好友吧</div>
+      <div class="btnLinkWrap"><span class="btnLink showPop">奖励规则</span></div>
+    </div>
+  </div>
+
+  <div class="pageInfo">
+    <div class="container">
+      <div class="btnBack hidePage"></div>
+
+      <div class="headerLine"><span class="span">优惠奖励</span></div>
+      <ul>
+        <li>领取路书专属优惠码，路书签约机构账户将获得延长15天的奖励。</li>
+        <li>活动为期一周，截止日期12月14日</li>
+      </ul>
+
+      <div class="headerLine"><span class="span">优惠奖励</span></div>
+      <ul>
+        <li>每有一家机构申请试用路书，您将获得延长2天的奖励。</li>
+        <li>每有一家机构正式签约路书，您将获得延长15天的奖励。</li>
+        <li>所有奖励将自动累积到您的机构账号。</li>
+        <li>活动为期一周，截止日期12月14日。</li>
+        <li>奖励只适用于路书机构版本用户，不适用于路书标准版本用户。</li>
+      </ul>
+
+
+    </div>
+  </div>
+
+
+
+
+
+
+
 </body>
 </html>

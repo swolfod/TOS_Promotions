@@ -1,0 +1,56 @@
+@charset "utf-8";
+/* CSS Document */
+
+html,body{
+margin:0;
+padding:0;
+height:100%;
+width:100%;
+}
+
+body{
+position: relative;
+background: #fff;
+
+font-size: 14px;
+font-family: 'PingFang SC',"Hiragino Sans GB","Microsoft YaHei";
+color: #4F5A61;
+
+-moz-osx-font-smoothing: grayscale;
+-webkit-font-smoothing: antialiased;
+}
+
+.container{
+position: relative;
+padding: 25px;
+max-width: 600px;
+margin: auto;
+
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+}
+
+.containerGreen{
+max-width: 600px;
+margin: auto;
+padding: 40px 40px 10px 40px;
+position: relative;
+background: url("../images/greenBg.png") left top repeat-x;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

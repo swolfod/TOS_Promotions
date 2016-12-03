@@ -16,27 +16,49 @@
   <link href="{% static "css/responsive.css" %}" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="{% static "js/jquery-1.8.3.min.js" %}"></script>
   <script type="text/javascript" src="{% static "js/default.js" %}"></script>
+
+  <script type='text/javascript'>
+      var _vds = _vds || [];
+      window._vds = _vds;
+      (function(){
+        _vds.push(['setAccountId', '38018b3460394e43864ceb98019c901b']);
+        (function() {
+          var vds = document.createElement('script');
+          vds.type='text/javascript';
+          vds.async = true;
+          vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
+          var s = document.getElementsByTagName('script')[0];
+          s.parentNode.insertBefore(vds, s);
+        })();
+      })();
+  </script>
 </head>
 
 <body>
 
   <div class="container">
-    <a href="{% url "TOS_Pyramid.views.shareCode" account.id %}" class="btnBack"></a>
-    <h1>激活优惠码</h1>
+    <div class="bell">
+      <img src="{% static "images/computer.png" %}" width="152"/>
+    </div>
 
-    <div class="errorMsg">{% if error %}{{ error }}{% endif %}</div>
+    <br/><br/>
+    <div class="center">
+      <div class="headerLarge green"><span>激活成功!</span></div>
+      <div class="font20">我们会尽快与您取得联系</div>
+      3秒后页面会自动跳转…
+    </div>
 
-    <form method="post">
-      {% csrf_token %}
 
-      <input type="text" id="name" name="name" placeholder="姓名"/>
-      <input type="text" id="company" name="organization" placeholder="公司名称"/>
-      <input type="text" id="phone" name="phone" placeholder="手机号码"/>
-      <input type="text" id="email" name="email" placeholder="邮箱地址"/>
-      <input type="hidden" name="code" value="{{ code }}" />
-
-      <div class="btnWrap"><a href="javascript:void(0)" id="btnSubmit" class="btnBar2">提交</a></div>
-    </form>
   </div>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      setTimeout(function() {
+        window.location.href = "{% url "TOS_Pyramid.views.shareCode" account.id %}";
+      }, 3000);
+    })
+  </script>
+
+
 </body>
 </html>

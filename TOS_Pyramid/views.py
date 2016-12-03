@@ -36,7 +36,7 @@ def bindCode(request, code):
                 "currentCode": currentCode
             })
 
-        return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(code,)))
+        return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(wechatAccount.id,)))
     elif request.method == "POST":
         toBind = str2bool(request.POST["bind"].strip().lower())
         if toBind:
@@ -46,25 +46,23 @@ def bindCode(request, code):
                 promotionCode.bonusDays = 15
                 promotionCode.save()
 
-            return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(code,)))
-        else:
-            currentCode = PromotionCode.objects.filter(accounts__account=wechatAccount).first()
-            return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(currentCode.code,)))
+        return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(wechatAccount.id,)))
 
 
 
 @requireWechatAuth
 @transaction.atomic
-def shareCode(request, code):
+def shareCode(request, accountId):
     wechatAccount = getCurrentAccount(request)
     promotionCode = PromotionCode.objects.filter(accounts__account=wechatAccount).first()
 
     if request.method == "POST":
         if promotionCode:
-            return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(promotionCode.code,)))
+            return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(wechatAccount.id,)))
 
-        inviterCode = request.POST.get("code")
-        inviterCode = PromotionCode.objects.get(code=inviterCode)
+        inviterId = request.POST["inviter"]
+        inviter = WechatAccount.objects.get(pk=inviterId)
+        inviterCode = PromotionCode.objects.get(accounts__account=inviter)
         inviterCode.invitees += 1
         inviterCode.save()
 
@@ -77,17 +75,14 @@ def shareCode(request, code):
 
         CodeAccount(code=promotionCode, account=wechatAccount).save()
 
-        return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(promotionCode.code,)))
+        return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(wechatAccount.id,)))
 
 
     if not promotionCode:
-        inviterCode = PromotionCode.objects.select_related("organization").get(code=code)
-        inviterAccount = CodeAccount.objects.select_related("account").get(code=inviterCode).account
+        inviterAccount = WechatAccount.objects.get(pk=accountId)
         return secureRender(request, "invitee.html", {
             "account": wechatAccount,
-            "inviter": inviterAccount,
-            "organization": inviterCode.organization,
-            "code": code
+            "inviter": inviterAccount
         })
     elif promotionCode.organization and promotionCode.featured:
         return secureRender(request, "featuredInviter.html", {
@@ -208,11 +203,11 @@ def ajApproveApplication(request):
     return respondJson()
 
 
+@requireWechatAuth
 @transaction.atomic
 def applyTOSBeta(request, code):
-    responseContent = {
-        "code": code
-    }
+    wechatAccount = getCurrentAccount(request)
+    responseContent = {"account": wechatAccount, "code": code}
 
     promotionCode = PromotionCode.objects.get(code=code)
     if promotionCode.application:
@@ -247,9 +242,9 @@ def applyTOSBeta(request, code):
             promotionCode.inviterCode.bonusDays += 2
             promotionCode.inviterCode.save()
 
-        responseContent["applied"] = True
-
-    return secureRender(request, "applyTOS.html", responseContent)
+        return secureRender(request, "applicationSubmitted.html" if not responseContent.get("error") else "applyTOS.html", responseContent)
+    else:
+        return secureRender(request, "applyTOS.html", responseContent)
 
 def exportPromotions(request):
     response = HttpResponse(content_type="text/csv")

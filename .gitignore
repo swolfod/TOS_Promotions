@@ -2,7 +2,8 @@
 *.DS_Store
 .idea/
 .idea/*
-node_modules
-public/*
-static/release/*
-build
+__pychache__/
+*.pyc
+images/config.py
+media/*
+*/**/migrations/*
