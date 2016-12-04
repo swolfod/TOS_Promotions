@@ -84,7 +84,7 @@ def shareCode(request, accountId):
             "account": wechatAccount,
             "inviter": inviterAccount
         })
-    elif promotionCode.organization and promotionCode.featured:
+    elif promotionCode.organization or promotionCode.featured:
         return secureRender(request, "featuredInviter.html", {
             "account": wechatAccount,
             "promotionCode": {
