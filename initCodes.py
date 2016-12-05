@@ -15,7 +15,7 @@ if __name__ == "__main__":
 贝妮吉吉	442		BJNN12802
 遨游大师	*	AYDS12803
 amstardmc	688		AMST12804
-住百家	－	ZBJX12805
+住百家	-	ZBJX12805
 唯恩	613		WNXX12806
 中青旅耀悦	663		JGXZ12807
 诺思旅行	21	NSLX12808
@@ -35,11 +35,11 @@ amstardmc	688		AMST12804
 Touchtrips	83	TOUC12823
 贵州国际旅行社	236		GZGJ12824
 compass	51	COMPJ12825
-译见	－	YJXX12826
+译见	-	YJXX12826
 赫美旅业	653		HMLY12827
 上汽阿里	*	SQAL12828
-梦想旅行	－		MXLX12830
-蘑菇旅行	－	MGLX12831
+梦想旅行	-		MXLX12830
+蘑菇旅行	-	MGLX12831
 理想国	421		LXGX12832
 竹园国旅	431		ZYGL12833
 游心	47	YXLV12834
