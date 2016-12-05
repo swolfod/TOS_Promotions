@@ -30,24 +30,24 @@ amstardmc	688		AMST12804
 五大洲商旅	173		WDZX12818
 爱玩兔	49	AWTX12819
 亚洲商务航空俱乐部	649		YZSW12820
-品行之旅	152		PXZL12821
-领航	539		LHXX12822
-Touchtrips	83	TOUC12823
-贵州国际旅行社	236		GZGJ12824
-compass	51	COMPJ12825
-译见	-	YJXX12826
-赫美旅业	653		HMLY12827
-上汽阿里	*	SQAL12828
-梦想旅行	-		MXLX12830
-蘑菇旅行	-	MGLX12831
-理想国	421		LXGX12832
-竹园国旅	431		ZYGL12833
-游心	47	YXLV12834
-北京环亚风景国际旅行社	706	THGC14011
-媒体	*	MTMT12835
+品行之旅    152 PXZL12821
+领航  539 LHXX12822
+Touchtrips  83  TOUC12823
+贵州国际旅行社 236 GZGJ12824
+compass 51  COMPJ12825
+译见  -   YJXX12826
+赫美旅业	653 HMLY12827
+上汽阿里    *   SQAL12828
+梦想旅行    -   MXLX12830
+蘑菇旅行    -   MGLX12831
+理想国 421 LXGX12832
+竹园国旅    431 ZYGL12833
+游心  47  YXLV12834
+北京环亚风景国际旅行社 706	THGC14011
+媒体  *   MTMT12835
 """.strip().split("\n")
 
-    allCodes = [row.split("\t") for row in codesSrc]
+    allCodes = [row.split() for row in codesSrc]
 
     try:
         organization = Organization.objects.get(pk=706)
