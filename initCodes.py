@@ -48,6 +48,11 @@ compass	51	COMPJ12825
 
     allCodes = [row.split("\t") for row in codesSrc]
 
+    try:
+        organization = Organization.objects.get(pk=706)
+    except:
+        Organization(id=706, name="北京环亚风景国际旅行社").save()
+
     for codeParts in allCodes:
         orgName = codeParts[0].strip()
         orgId = codeParts[1].strip()
