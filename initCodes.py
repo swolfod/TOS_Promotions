@@ -43,7 +43,8 @@ compass	51	COMPJ12825
 理想国	421		LXGX12832
 竹园国旅	431		ZYGL12833
 游心	47	YXLV12834
-北京环亚风景国际旅行社	706
+北京环亚风景国际旅行社	706	THGC14011
+媒体	*	MTMT12835
 """.strip().split("\n")
 
     allCodes = [row.split("\t") for row in codesSrc]
