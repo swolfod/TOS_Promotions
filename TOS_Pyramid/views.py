@@ -60,11 +60,12 @@ def shareCode(request, accountId):
         if promotionCode:
             return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(wechatAccount.id,)))
 
-        inviterId = request.POST["inviter"]
-        inviter = WechatAccount.objects.get(pk=inviterId)
-        inviterCode = PromotionCode.objects.get(accounts__account=inviter)
-        inviterCode.invitees += 1
-        inviterCode.save()
+        inviterId = request.POST.get("inviter")
+        if inviterId and inviterId != "000":
+            inviter = WechatAccount.objects.get(pk=inviterId)
+            inviterCode = PromotionCode.objects.get(accounts__account=inviter)
+            inviterCode.invitees += 1
+            inviterCode.save()
 
         code = randomString(8)
         while PromotionCode.objects.filter(code=code).exists():
@@ -79,7 +80,10 @@ def shareCode(request, accountId):
 
 
     if not promotionCode:
-        inviterAccount = WechatAccount.objects.get(pk=accountId)
+        if accountId != "000":
+            inviterAccount = WechatAccount.objects.get(pk=accountId)
+        else:
+            inviterAccount = {"id": "000", "nickname": "路书"}
         return secureRender(request, "invitee.html", {
             "account": wechatAccount,
             "inviter": inviterAccount
