@@ -13,8 +13,8 @@ if __name__ == "__main__":
 
     codesSrc = """
 贝妮吉吉	442		BJNN12802
-遨游大师	13025	AYDS12803
-amstardmc	14552	AMST12804
+遨游大师	＊	AYDS12803
+amstardmc	688		AMST12804
 住百家	－	ZBJX12805
 唯恩	613		WNXX12806
 中青旅耀悦	663		JGXZ12807
@@ -22,7 +22,7 @@ amstardmc	14552	AMST12804
 济南传唯信息咨询有限公司	675		JNCW12809
 踏沙行	606 	JSXX12810
 海洋国旅	219		HYGL12811
-纷途游	9403 	BTYX12812
+纷途游	＊ 	BTYX12812
 你定旅行	583		NDLX12813
 卧客旅行	687		WKLX12815
 知行家	145		ZXJX12816
@@ -37,13 +37,13 @@ Touchtrips	83	TOUC12823
 compass	51	COMPJ12825
 译见	－	YJXX12826
 赫美旅业	653		HMLY12827
-上汽阿里	8617	SQAL12828
+上汽阿里	＊	SQAL12828
 梦想旅行	－		MXLX12830
 蘑菇旅行	－	MGLX12831
 理想国	421		LXGX12832
 竹园国旅	431		ZYGL12833
 游心	47	YXLV12834
-北京环亚风景国际旅行社	706	   THGC14011
+北京环亚风景国际旅行社	706
 """.strip().split("\n")
 
     allCodes = [row.split("\t") for row in codesSrc]
@@ -65,15 +65,11 @@ compass	51	COMPJ12825
         if orgId == "-":
             promotionCode.organization_id = None
             promotionCode.featured = False
+        elif orgId == "*":
+            promotionCode.organization_id = None
+            promotionCode.featured = True
         else:
             promotionCode.organization_id = orgId
             promotionCode.featured = True
 
         promotionCode.save()
-
-    mediaCode = PromotionCode.objects.filter(code="MTMT12835").first()
-    if not mediaCode:
-        mediaCode = PromotionCode(code="MTMT12835")
-    mediaCode.organization_id = None
-    mediaCode.featured = True
-    mediaCode.save()
