@@ -44,6 +44,8 @@ compass 51  COMPJ12825
 竹园国旅    431 ZYGL12833
 游心  47  YXLV12834
 北京环亚风景国际旅行社 706	THGC14011
+北京惠通陆华汽车俱乐部有限公司    227 WQ1NVLAO
+NICKSHAO    *   A1CCYOB1
 媒体  *   MTMT12835
 """.strip().split("\n")
 
