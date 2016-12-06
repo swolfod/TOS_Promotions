@@ -88,6 +88,8 @@ def shareCode(request, accountId):
             "account": wechatAccount,
             "inviter": inviterAccount
         })
+    elif int(accountId) != wechatAccount.id:
+        return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(wechatAccount.id,)))
     elif promotionCode.organization or promotionCode.featured:
         return secureRender(request, "featuredInviter.html", {
             "account": wechatAccount,
