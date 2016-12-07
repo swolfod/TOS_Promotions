@@ -36,14 +36,14 @@
 
       <form method="post">
         {% csrf_token %}
-        <input type="hidden" name="bind" value="1" />
-        <a href="javascript:void(0)" onclick="$(this).closest('form').submit(); return false;" class="btnBar">使用新的优惠码</a>
+        <input type="hidden" name="bind" value="0" />
+        <a href="javascript:void(0)" onclick="$(this).closest('form').submit(); return false;" class="btnBarGrey">不更换我的优惠码</a>
       </form>
 
       <form method="post">
         {% csrf_token %}
-        <input type="hidden" name="bind" value="0" />
-        <a href="javascript:void(0)" onclick="$(this).closest('form').submit(); return false;" class="btnBarGrey">不更换我的优惠码</a>
+        <input type="hidden" name="bind" value="1" />
+        <a href="javascript:void(0)" onclick="$(this).closest('form').submit(); return false;" class="btnBar">使用新的优惠码</a>
       </form>
     </div>
   </div>

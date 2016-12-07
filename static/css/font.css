@@ -204,12 +204,18 @@ top: 20px;
 }
 
 .btnLink{
-color: #4B4E52;
+color: #00A4AB;
 font-size: 14px;
 font-weight: 500;
 cursor: pointer;
-padding: 10px 0;
+margin: 30px 0;
+width: 120px;
+height: 28px;
+line-height: 28px;
+text-align: center;
 display: inline-block;
+border-radius: 6px;
+border: 2px solid #00A4AB;
 }
 
 .btnLinkGreen{
