@@ -61,6 +61,7 @@ def shareCode(request, accountId):
             return HttpResponseRedirect(reverse("TOS_Pyramid.views.shareCode", args=(wechatAccount.id,)))
 
         inviterId = request.POST.get("inviter")
+        inviterCode = None
         if inviterId and inviterId != "000":
             inviter = WechatAccount.objects.get(pk=inviterId)
             inviterCode = PromotionCode.objects.get(accounts__account=inviter)
