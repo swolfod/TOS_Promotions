@@ -153,7 +153,7 @@ def admin(request):
 
         return HttpResponseRedirect(reverse("TOS_Pyramid.views.admin"))
 
-    codeQuery = PromotionCode.objects.select_related("organization", "application").order_by("-featured", "-id")
+    codeQuery = PromotionCode.objects.select_related("organization", "application", "inviterCode__organization").order_by("-featured", "-id")
     codeCount = codeQuery.count()
 
     if q:

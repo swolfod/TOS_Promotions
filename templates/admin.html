@@ -55,6 +55,8 @@
             <th>需奖励总天数</th>
             <th>已奖励天数</th>
             <th>TOS申请</th>
+            <th>邀请优惠码</th>
+            <th>邀请机构</th>
           </tr>
         </thead>
         <tbody>
@@ -111,6 +113,8 @@
                 无
               {% endif %}
             </td>
+            <td class="inviterCode">{% if code.inviterCode %}{{ code.inviterCode.code }}{% endif %}</td>
+            <td class="inviterOrganization">{% if code.inviterCode and code.inviterCode.organization %}{{ code.inviterCode.organization.name }}{% endif %}</td>
           </tr>
         {% endfor %}
         </tbody>
